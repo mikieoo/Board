@@ -28,6 +28,9 @@ public class Board {
     @Column(nullable = false)
     private String content;
 
+    @Column(nullable = false)
+    private String writer;
+
     @CreatedDate
     @Column(name = "created_date", updatable = false)
     private LocalDateTime createdDate;
@@ -36,9 +39,10 @@ public class Board {
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
 
-    public void update(String title, String content){
+    public void update(String title, String content, String writer){
         this.title = title;
         this.content = content;
+        this.writer = writer;
     }
 
 

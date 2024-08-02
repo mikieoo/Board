@@ -35,7 +35,7 @@ public class BlogService {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found"));
 
-        board.update(request.getTitle(), request.getContent());
+        board.update(request.getTitle(), request.getContent(), request.getWriter());
 
         return boardRepository.save(board);
     }
