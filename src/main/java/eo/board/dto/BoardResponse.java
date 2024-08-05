@@ -8,14 +8,15 @@ import lombok.NoArgsConstructor;
 import java.time.LocalDateTime;
 
 @Getter
+@NoArgsConstructor
 public class BoardResponse {
 
-    private final Long id; // PK
-    private final String title; // 제목
-    private final String content; // 내용
-    private final String writer; // 작성자
-    private final LocalDateTime createdDate; // 생성일
-    private final LocalDateTime modifiedDate; // 수정일
+    private Long id; // PK
+    private String title; // 제목
+    private String content; // 내용
+    private String writer; // 작성자
+    private LocalDateTime createdDate; // 생성일
+    private LocalDateTime modifiedDate; // 수정일
 
     public BoardResponse(Board board) {
         this.id = board.getId();

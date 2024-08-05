@@ -39,6 +39,7 @@ public class Board {
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
 
+    // 수정
     public void update(String title, String content, String writer){
         this.title = title;
         this.content = content;
