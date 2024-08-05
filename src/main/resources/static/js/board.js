@@ -9,7 +9,7 @@ if (deleteButton) {
         })
             .then(() => {
                 alert('삭제가 완료되었습니다.');
-                location.replace('/');
+                location.replace('/boards/list');
             });
     });
 }
@@ -56,7 +56,7 @@ if (createButton) {
         })
             .then(() => {
                 alert('등록 완료되었습니다.');
-                location.replace('/');
+                location.replace('/boards/list');
             });
     });
 }

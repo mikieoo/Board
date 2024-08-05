@@ -17,6 +17,7 @@ public class BoardResponse {
     private String writer; // 작성자
     private LocalDateTime createdDate; // 생성일
     private LocalDateTime modifiedDate; // 수정일
+    private int viewCount;
 
     public BoardResponse(Board board) {
         this.id = board.getId();
@@ -25,6 +26,7 @@ public class BoardResponse {
         this.writer = board.getWriter();
         this.createdDate = board.getCreatedDate();
         this.modifiedDate = board.getModifiedDate();
+        this.viewCount = board.getViewCount();
     }
 
 

@@ -39,6 +39,9 @@ public class Board {
     @Column(name = "modified_date")
     private LocalDateTime modifiedDate;
 
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int viewCount;
+
     // 수정
     public void update(String title, String content, String writer){
         this.title = title;

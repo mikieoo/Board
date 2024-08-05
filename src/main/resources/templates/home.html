@@ -30,6 +30,7 @@
                     <th>제목</th>
                     <th>작성자</th>
                     <th>작성일</th>
+                    <th>조회수</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -38,6 +39,7 @@
                     <td><a th:href="@{'/boards/' + ${board.id}}" th:text="${board.title}"></a></td>
                     <td th:text="${board.writer}"></td>
                     <td th:text="${board.createdDate}"></td>
+                    <td th:text="${board.viewCount}"></td>
                 </tr>
                 </tbody>
             </table>
@@ -45,16 +47,31 @@
     </div>
     <div class="pagination justify-content-center">
         <div class="pagination nav-list">
-            <span th:text="${boards.number + 1}"></span> / <span th:text="${boards.totalPages}"></span>
+            <!-- <span th:text="${boards.number + 1}"></span> / <span th:text="${boards.totalPages}"></span> -->
+            <ul class="pagination">
+                <!-- '이전' 링크 -->
+                <li class="page-item" th:if="${currentPage > 1}">
+                    <a class="page-link" th:href="@{/boards/list(page=${currentPage - 2}, size=${boards.size})}">&lt;</a>
+                </li>
 
-            <a th:href="@{/boards/list(page=${boards.number - 1}, size=${boards.size})}"
-               th:if="${boards.hasPrevious()}">Previous</a>
-            <a th:href="@{/boards/list(page=${boards.number + 1}, size=${boards.size})}"
-               th:if="${boards.hasNext()}">Next</a>
+                <!-- 페이지 번호 링크 -->
+                <li th:each="page : ${#numbers.sequence(startPage, endPage)}"
+                    th:classappend="${page == currentPage} ? 'active'" class="page-item">
+                    <a th:text="${page}" class="page-link" th:href="@{/boards/list(page=${page - 1}, size=${boards.size})}"></a>
+                </li>
+
+                <!-- '다음' 링크 -->
+                <li class="page-item" th:if="${currentPage < totalPages}">
+                    <a class="page-link" th:href="@{/boards/list(page=${currentPage}, size=${boards.size})}">&gt;</a>
+                </li>
+            </ul>
+
         </div>
     </div>
 </div>
 
-<script src="/js/board.js"></script>
+<script th:inline="javascript" src="/js/board.js">
+
+</script>
 </body>
 </html>
