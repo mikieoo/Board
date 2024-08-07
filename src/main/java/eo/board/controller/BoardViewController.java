@@ -5,8 +5,8 @@ import eo.board.entity.Board;
 import eo.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,10 +20,17 @@ public class BoardViewController {
 
     private final BoardService boardService;
 
-    // 홈 화면 (게시물 전체 조회)
+    // 홈 화면 (게시물 전체 조회) & 페이징 처리 & 검색 기능 (ㅠㅠ)
     @GetMapping("/boards/list")
-    public String getBoards(Model model, @PageableDefault Pageable pageable) {
-        Page<Board> boardPage = boardService.paging(pageable);
+    public String getBoards(Model model, @PageableDefault(direction = Sort.Direction.DESC) Pageable pageable,
+                            @RequestParam(required = false) String keyword) {
+        Page<Board> boardPage;
+        if (keyword != null && !keyword.isEmpty()) {
+            boardPage = boardService.search(keyword, pageable);
+        } else {
+            boardPage = boardService.paging(pageable);
+        }
+
         Page<BoardResponse> boardResponses = boardPage.map(BoardResponse::new);
 
         int totalPages = boardPage.getTotalPages();
@@ -32,6 +39,12 @@ public class BoardViewController {
 
         int startPage = (currentPage - 1) / pageGroupSize * pageGroupSize + 1;
         int endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+
+        model.addAttribute("keyword", keyword);
+
+        if(keyword != null && boardPage.isEmpty()) {
+            model.addAttribute("message", "검색 결과가 없습니다.");
+        }
 
         model.addAttribute("boards", boardResponses);
         model.addAttribute("startPage", startPage);
@@ -64,7 +77,6 @@ public class BoardViewController {
 
         return "update";
     }
-
 
 
 }

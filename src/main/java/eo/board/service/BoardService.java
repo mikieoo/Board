@@ -55,5 +55,10 @@ public class BoardService {
         boardRepository.updateView(id);
     }
 
+    // 검색 및 페이징 처리
+    public Page<Board> search(String keyword, Pageable pageable) {
+        return boardRepository.findByTitleContaining(keyword, pageable);
+    }
+
 
 }
