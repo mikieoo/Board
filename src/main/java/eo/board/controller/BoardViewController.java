@@ -22,7 +22,7 @@ public class BoardViewController {
 
     // 홈 화면 (게시물 전체 조회) & 페이징 처리 & 검색 기능 (ㅠㅠ)
     @GetMapping("/boards/list")
-    public String getBoards(Model model, @PageableDefault(direction = Sort.Direction.DESC) Pageable pageable,
+    public String getBoards(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             @RequestParam(required = false) String keyword) {
         Page<Board> boardPage;
         if (keyword != null && !keyword.isEmpty()) {
@@ -37,8 +37,13 @@ public class BoardViewController {
         int currentPage = boardPage.getNumber() + 1; // 현재 페이지는 0부터 시작하므로 +1
         int pageGroupSize = 10;
 
-        int startPage = (currentPage - 1) / pageGroupSize * pageGroupSize + 1;
-        int endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+        int startPage = 1;
+        int endPage = 1;
+
+        if (totalPages > 0) {
+            startPage = (currentPage - 1) / pageGroupSize * pageGroupSize + 1;
+            endPage = Math.min(startPage + pageGroupSize - 1, totalPages);
+        }
 
         model.addAttribute("keyword", keyword);
 
@@ -54,6 +59,7 @@ public class BoardViewController {
 
         return "home";
     }
+
 
     // 게시물 상세 조회
     @GetMapping("/boards/{id}")

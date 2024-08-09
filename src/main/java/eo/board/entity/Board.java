@@ -43,10 +43,9 @@ public class Board {
     private int viewCount;
 
     // 수정
-    public void update(String title, String content, String writer){
+    public void update(String title, String content){
         this.title = title;
         this.content = content;
-        this.writer = writer;
     }
 
 
