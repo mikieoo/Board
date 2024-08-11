@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/springsecurity6">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,34 +14,38 @@
 </div>
 
 <div class="container mt-5">
-    <!-- 검색 폼 및 글 작성 버튼 -->
-    <div class="row mb-3">
+    <!-- 검색 폼 및 버튼 -->
+    <div class="row mb-3 justify-content-between">
         <div class="col-lg-6 d-flex align-items-center">
-            <form class="d-flex justify-content-end" th:action="@{/boards/list}" method="get">
-                <input class="form-control me-2" type="search" name="keyword" placeholder="Search" aria-label="Search" th:value="${keyword}" style="max-width: 300px;">
+            <form class="d-flex" th:action="@{/boards/list}" method="get" style="width: 100%;">
+                <input class="form-control me-2" type="search" name="keyword" placeholder="Search" aria-label="Search" th:value="${keyword}" style="flex: 1;">
                 <button class="btn btn-outline-success" type="submit">Search</button>
             </form>
         </div>
-        <div class="col-lg-6 d-flex justify-content-end">
-                <div class="d-flex ms-3">
-                    <button type="button" class="btn btn-outline-primary btn-large me-2" onclick="location.href='/login'">로그인</button>
-                    <button type="button" class="btn btn-outline-primary btn-large" onclick="location.href='/signup'">회원가입</button>
-                </div>
+        <div class="col-lg-6 d-flex justify-content-end align-items-center">
+            <div class="d-flex align-items-center">
+                <!-- 로그인된 사용자일 경우 닉네임 표시 -->
+                <span th:if="${nickname != null}" class="me-3">안녕하세요, <strong th:text="${nickname}"></strong>님!</span>
+                <!-- 로그인/로그아웃 버튼 -->
+                <a id="login-btn" class="btn btn-outline-primary me-2" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
+                <a id="logout-btn" class="btn btn-outline-primary me-2" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
+                <a id="signup-btn" class="btn btn-outline-primary" th:href="@{/signup}">회원가입</a>
+            </div>
         </div>
     </div>
-
 
     <!-- 검색 결과 메시지 -->
     <div class="row mb-3" th:if="${message}">
         <div class="col-lg-12">
-            <div class="alert alert-warning" role="alert" th:text="${message}"></div>
+            <div class="alert alert-warning text-center" role="alert" th:text="${message}"></div>
         </div>
     </div>
 
+    <!-- 게시판 리스트 -->
     <div class="row">
         <div class="col-lg-12">
-            <table class="table table-bordered">
-                <thead>
+            <table class="table table-bordered table-hover">
+                <thead class="table-light">
                 <tr>
                     <th>번호</th>
                     <th>제목</th>
@@ -62,29 +67,32 @@
         </div>
     </div>
 
-    <!-- 페이징 처리 -->
-    <div class="pagination justify-content-center">
-        <div class="pagination nav-list">
-            <ul class="pagination">
-                <!-- '이전' 링크 -->
-                <li class="page-item" th:if="${currentPage > 1}">
-                    <a class="page-link" th:href="@{/boards/list(keyword=${keyword}, page=${currentPage - 2}, size=${boards.size})}">&lt;</a>
-                </li>
-
-                <!-- 페이지 번호 링크 -->
-                <li th:each="page : ${#numbers.sequence(startPage, endPage)}"
-                    th:classappend="${page == currentPage} ? 'active'" class="page-item">
-                    <a th:text="${page}" class="page-link" th:href="@{/boards/list(keyword=${keyword}, page=${page - 1}, size=${boards.size})}"></a>
-                </li>
-
-                <!-- '다음' 링크 -->
-                <li class="page-item" th:if="${currentPage < totalPages}">
-                    <a class="page-link" th:href="@{/boards/list(keyword=${keyword}, page=${currentPage}, size=${boards.size})}">&gt;</a>
-                </li>
-            </ul>
-        </div>
-
+    <!-- 글쓰기 버튼 -->
+    <div class="d-flex justify-content-end mt-3">
+        <a class="btn btn-outline-primary" href="/new-board">글쓰기</a>
     </div>
+
+    <!-- 페이지 네이션 -->
+    <div class="d-flex justify-content-center mt-4">
+        <ul class="pagination">
+            <!-- '이전' 링크 -->
+            <li class="page-item" th:if="${currentPage > 1}">
+                <a class="page-link" th:href="@{/boards/list(keyword=${keyword}, page=${currentPage - 2}, size=${boards.size})}">&lt;</a>
+            </li>
+
+            <!-- 페이지 번호 링크 -->
+            <li th:each="page : ${#numbers.sequence(startPage, endPage)}"
+                th:classappend="${page == currentPage} ? 'active'" class="page-item">
+                <a th:text="${page}" class="page-link" th:href="@{/boards/list(keyword=${keyword}, page=${page - 1}, size=${boards.size})}"></a>
+            </li>
+
+            <!-- '다음' 링크 -->
+            <li class="page-item" th:if="${currentPage < totalPages}">
+                <a class="page-link" th:href="@{/boards/list(keyword=${keyword}, page=${currentPage}, size=${boards.size})}">&gt;</a>
+            </li>
+        </ul>
+    </div>
+
 </div>
 
 <script src="/js/board.js"></script>

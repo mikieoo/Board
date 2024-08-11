@@ -4,7 +4,7 @@ import eo.board.entity.Role;
 import eo.board.entity.User;
 import lombok.*;
 
-@Getter @Setter
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -22,7 +22,7 @@ public class UserRequest {
                 .nickname(nickname)
                 .password(password)
                 .email(email)
-                .role(role)
+                .role(Role.USER)
                 .build();
     }
 

@@ -2,12 +2,16 @@ package eo.board.controller;
 
 import eo.board.dto.BoardResponse;
 import eo.board.entity.Board;
+import eo.board.entity.CustomUserDetails;
 import eo.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,6 +28,18 @@ public class BoardViewController {
     @GetMapping("/boards/list")
     public String getBoards(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             @RequestParam(required = false) String keyword) {
+
+        // {닉네임} 환영 인사 문구
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            Object principal = authentication.getPrincipal();
+            if (principal instanceof CustomUserDetails) {
+                String nickname = ((CustomUserDetails) principal).getNickname();
+                model.addAttribute("nickname", nickname);  // 모델에 닉네임 추가
+            }
+        }
+
+        // 검색 및 페이징 처리
         Page<Board> boardPage;
         if (keyword != null && !keyword.isEmpty()) {
             boardPage = boardService.search(keyword, pageable);
