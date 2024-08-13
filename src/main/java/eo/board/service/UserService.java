@@ -16,9 +16,9 @@ public class UserService {
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
-    public Long save(UserRequest request) {
+    public void save(UserRequest request) {
         request.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
-        return userRepository.save(request.toEntity()).getId();
+        userRepository.save(request.toEntity());
     }
 
 }

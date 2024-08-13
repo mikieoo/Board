@@ -13,6 +13,7 @@ public class UserRequest {
     private String username;
     private String nickname;
     private String password;
+    private String picture;
     private String email;
     private Role role;
 
@@ -21,6 +22,7 @@ public class UserRequest {
                 .username(username)
                 .nickname(nickname)
                 .password(password)
+                .picture(picture)
                 .email(email)
                 .role(Role.USER)
                 .build();

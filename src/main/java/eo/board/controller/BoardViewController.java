@@ -3,7 +3,9 @@ package eo.board.controller;
 import eo.board.dto.BoardResponse;
 import eo.board.entity.Board;
 import eo.board.entity.CustomUserDetails;
+import eo.board.entity.SessionUser;
 import eo.board.service.BoardService;
+import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,20 +25,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 public class BoardViewController {
 
     private final BoardService boardService;
+    private final HttpSession session;
 
     // 홈 화면 (게시물 전체 조회) & 페이징 처리 & 검색 기능 (ㅠㅠ)
     @GetMapping("/boards/list")
     public String getBoards(Model model, @PageableDefault(sort = "id", direction = Sort.Direction.DESC) Pageable pageable,
                             @RequestParam(required = false) String keyword) {
 
-        // {닉네임} 환영 인사 문구
-        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        if (authentication != null && authentication.isAuthenticated()) {
-            Object principal = authentication.getPrincipal();
-            if (principal instanceof CustomUserDetails) {
-                String nickname = ((CustomUserDetails) principal).getNickname();
-                model.addAttribute("nickname", nickname);  // 모델에 닉네임 추가
-            }
+        // {닉네임} 환영인사 문구
+        SessionUser sessionUser = (SessionUser) session.getAttribute("user");
+        if (sessionUser != null) {
+            model.addAttribute("nickname", sessionUser.getNickname());
         }
 
         // 검색 및 페이징 처리

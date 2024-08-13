@@ -10,11 +10,12 @@ import java.util.Collection;
 
 @Entity
 @Getter
+@Setter
 @Builder
 @Table(name = "users")
 @AllArgsConstructor
 @NoArgsConstructor
-public class User {
+public class User extends TimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -25,14 +26,28 @@ public class User {
     @Column(nullable = false, unique = true)
     private String nickname; // 이름(닉네임)
 
-    @Column(nullable = false)
+    @Column(length = 100)
     private String password; // 패스워드
 
     @Column(nullable = false)
     private String email; // 이메일
 
+    @Column(name = "profile_picture")
+    private String picture;
+
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role; // 권한 처리 (사용자 혹은 관리자)
+
+    public User update(String nickname, String picture) {
+        this.nickname = nickname;
+        this.picture = picture;
+
+        return this;
+    }
+
+    public String getRoleValue() {
+        return this.role.getValue();
+    }
 
 }

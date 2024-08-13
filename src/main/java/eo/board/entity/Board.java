@@ -48,5 +48,4 @@ public class Board {
         this.content = content;
     }
 
-
 }
