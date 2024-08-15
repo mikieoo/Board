@@ -16,21 +16,31 @@
         <div class="col-lg-8">
             <article>
                 <input type="hidden" id="board-id" th:value="${board.id}">
+
                 <header class="mb-4">
-                    <h1 class="fw-bolder mb-1" th:text="${board.title}"></h1>
-                    <div class="text-muted fst-italic mb-2" th:text="|Posted on ${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}|"></div>
+                    <h1 class="fw-bolder mb-3" th:text="${board.title}"></h1>
+                    <div class="text-muted fst-italic mb-3">
+                        <span>작성자: <span th:text="${board.writer}"></span></span> |
+                        <span>작성일: <span th:text="|${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm')}|"></span></span> |
+                        <span>조회수: <span th:text="${board.viewCount}"></span></span>
+                    </div>
                 </header>
+
                 <section class="mb-5">
-                    <p class="fs-5 mb-4" th:text="${board.content}"></p>
+                    <textarea class="form-control" rows="10" readonly th:text="${board.content}"></textarea>
                 </section>
+
                 <div class="mb-3">
                     <button type="button" id="list-btn" class="btn btn-primary btn-sm"
                             th:onclick="|location.href='@{/boards/list}'|">목록</button>
-                    <button type="button" id="modify-btn"
-                            th:onclick="|location.href='@{/new-board?id={boardId}(boardId=${board.id})}'|"
-                            class="btn btn-primary btn-sm">수정</button>
-                    <button type="button" id="delete-btn"
-                            class="btn btn-secondary btn-sm">삭제</button>
+                    <span th:if="${writer} == true">
+                        <button type="button" id="modify-btn"
+                                th:onclick="|location.href='@{/new-board?id={boardId}(boardId=${board.id})}'|"
+                                class="btn btn-primary btn-sm">수정</button>
+                        <button type="button" id="delete-btn"
+                                class="btn btn-secondary btn-sm">삭제</button>
+                    </span>
+
                 </div>
             </article>
         </div>

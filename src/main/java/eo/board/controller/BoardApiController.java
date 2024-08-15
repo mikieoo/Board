@@ -2,7 +2,9 @@ package eo.board.controller;
 
 import eo.board.dto.BoardRequest;
 import eo.board.dto.BoardResponse;
+import eo.board.dto.SessionUser;
 import eo.board.entity.Board;
+import eo.board.entity.LoginUser;
 import eo.board.service.BoardService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -20,15 +22,12 @@ public class BoardApiController {
 
     // 게시물 생성
     @PostMapping("/boards")
-    public ResponseEntity<Board> createBoard(@RequestBody BoardRequest request) {
-        Board savedBoard = boardService.save(request);
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(savedBoard);
+    public ResponseEntity createBoard(@RequestBody BoardRequest request, @LoginUser SessionUser user) {
+        return ResponseEntity.ok(boardService.save(user.getNickname(), request));
     }
 
     // 게시물 전체 조회
-    @GetMapping("/boards")
+    @GetMapping("/boards/list")
     public ResponseEntity<List<BoardResponse>> findAllBoards() {
         List<BoardResponse> boards = boardService.findAll()
                 .stream()

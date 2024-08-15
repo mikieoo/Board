@@ -17,7 +17,7 @@
                 <input type="hidden" id="board-id" th:value="${board.id}">
                 <header class="mb-4">
                     <input type="text" class="form-control mb-3" placeholder="제목" id="title" th:value="${board.title}">
-                    <input type="text" class="form-control" placeholder="작성자" id="writer" th:value="${board.writer}">
+                    <input type="text" class="form-control" placeholder="작성자" id="writer" th:value="${nickname}" readonly>
                 </header>
                 <section class="mb-5">
                     <textarea class="form-control h-25" rows="10" placeholder="내용" id="content" th:text="${board.content}"></textarea>

@@ -7,6 +7,7 @@ import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,10 +21,10 @@ public class User extends TimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
+    @Column(nullable = false, unique = true)
     private String username; // 아이디
 
-    @Column(nullable = false, unique = true)
+    @Column(nullable = false)
     private String nickname; // 이름(닉네임)
 
     @Column(length = 100)
@@ -38,6 +39,9 @@ public class User extends TimeEntity {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private Role role; // 권한 처리 (사용자 혹은 관리자)
+
+    @OneToMany(mappedBy = "user")
+    private List<Board> boards;
 
     public User update(String nickname, String picture) {
         this.nickname = nickname;

@@ -1,10 +1,8 @@
 package eo.board.entity;
 
+import eo.board.dto.BoardRequest;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,7 +12,7 @@ import java.time.LocalDateTime;
 @Entity
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
+@Data
 @Builder
 @EntityListeners(AuditingEntityListener.class)
 public class Board {
@@ -41,6 +39,10 @@ public class Board {
 
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int viewCount;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id")
+    private User user;
 
     // 수정
     public void update(String title, String content){

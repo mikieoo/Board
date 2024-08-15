@@ -1,7 +1,6 @@
 package eo.board.service;
 
 import eo.board.dto.UserRequest;
-import eo.board.entity.User;
 import eo.board.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -20,5 +19,6 @@ public class UserService {
         request.setPassword(bCryptPasswordEncoder.encode(request.getPassword()));
         userRepository.save(request.toEntity());
     }
+
 
 }

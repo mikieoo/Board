@@ -1,9 +1,9 @@
 package eo.board.dto;
 
 import eo.board.entity.Board;
-import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.RequiredArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -17,7 +17,8 @@ public class BoardResponse {
     private String writer; // 작성자
     private LocalDateTime createdDate; // 생성일
     private LocalDateTime modifiedDate; // 수정일
-    private int viewCount;
+    private int viewCount; // 조회수
+    private Long userId;
 
     public BoardResponse(Board board) {
         this.id = board.getId();
@@ -28,6 +29,5 @@ public class BoardResponse {
         this.modifiedDate = board.getModifiedDate();
         this.viewCount = board.getViewCount();
     }
-
 
 }

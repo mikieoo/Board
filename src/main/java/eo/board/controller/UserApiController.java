@@ -7,6 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.oauth2.core.user.OAuth2User;
@@ -26,7 +27,7 @@ public class UserApiController {
     private final UserService userService;
 
     @PostMapping("/user")
-    public String saveUser(UserRequest request) {
+    public String saveUser(@AuthenticationPrincipal UserRequest request) {
         userService.save(request);
         return "redirect:/login";
     }

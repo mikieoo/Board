@@ -30,7 +30,7 @@
                 <a id="mypage-btn" class="btn btn-outline-primary me-2" sec:authorize="isAuthenticated()" th:href="@{/mypage}">마이페이지</a>
                 <a id="login-btn" class="btn btn-outline-primary me-2" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
                 <a id="logout-btn" class="btn btn-outline-primary me-2" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
-                <a id="signup-btn" class="btn btn-outline-primary" th:href="@{/signup}">회원가입</a>
+                <a id="signup-btn" class="btn btn-outline-primary" sec:authorize="isAnonymous()" th:href="@{/signup}">회원가입</a>
             </div>
         </div>
     </div>
@@ -56,11 +56,12 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="board, loop : ${boards}">
+                <tr th:each="board, loop : ${boards}" style="cursor: pointer;"
+                    th:onclick="|window.location.href='/boards/' + ${board.id}|">
                     <td th:text="${boards.getTotalElements() - (boards.number * boards.size) - loop.index}"></td>
-                    <td><a th:href="@{'/boards/' + ${board.id}}" th:text="${board.title}"></a></td>
+                    <td th:text="${board.title}"></td>
                     <td th:text="${board.writer}"></td>
-                    <td th:text="${board.createdDate}"></td>
+                    <td th:text="${#temporals.format(board.createdDate, 'yyyy-MM-dd HH:mm:ss')}"></td>
                     <td th:text="${board.viewCount}"></td>
                 </tr>
                 </tbody>

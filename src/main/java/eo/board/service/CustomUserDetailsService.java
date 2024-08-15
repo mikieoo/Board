@@ -1,7 +1,7 @@
 package eo.board.service;
 
 import eo.board.entity.CustomUserDetails;
-import eo.board.entity.SessionUser;
+import eo.board.dto.SessionUser;
 import eo.board.entity.User;
 import eo.board.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;

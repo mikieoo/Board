@@ -2,8 +2,12 @@
 package eo.board.service;
 
 import eo.board.dto.BoardRequest;
+import eo.board.dto.BoardResponse;
+import eo.board.dto.SessionUser;
 import eo.board.entity.Board;
+import eo.board.entity.User;
 import eo.board.repository.BoardRepository;
+import eo.board.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -17,9 +21,16 @@ import java.util.List;
 public class BoardService {
 
     private final BoardRepository boardRepository;
+    private final UserRepository userRepository;
 
-    public Board save(BoardRequest request) {
-        return boardRepository.save(request.toEntity());
+    public Long save(String nickname, BoardRequest request) {
+        User user = userRepository.findByNickname(nickname);
+        request.setUser(user);
+
+        Board board = request.toEntity(user);
+        boardRepository.save(board);
+
+        return board.getId();
     }
 
     public List<Board> findAll() {

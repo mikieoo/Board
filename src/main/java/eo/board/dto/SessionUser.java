@@ -1,5 +1,7 @@
-package eo.board.entity;
+package eo.board.dto;
 
+import eo.board.entity.Role;
+import eo.board.entity.User;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -9,6 +11,7 @@ import java.io.Serializable;
 @AllArgsConstructor
 public class SessionUser implements Serializable {
 
+    private final Long id;
     private final String username;
     private final String nickname;
     private final String email;
@@ -16,10 +19,12 @@ public class SessionUser implements Serializable {
     private final Role role;
 
     public SessionUser(User user) {
+        this.id = user.getId();
         this.username = user.getUsername();
         this.nickname = user.getNickname();
         this.email = user.getEmail();
         this.picture = user.getPicture();
         this.role = user.getRole();
     }
+
 }
