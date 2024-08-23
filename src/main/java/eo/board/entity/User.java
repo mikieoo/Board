@@ -43,9 +43,10 @@ public class User extends TimeEntity {
     @OneToMany(mappedBy = "user")
     private List<Board> boards;
 
-    public User update(String nickname, String picture) {
+    public User update(String nickname, String picture, String password) {
         this.nickname = nickname;
         this.picture = picture;
+        this.password = password;
 
         return this;
     }

@@ -18,6 +18,7 @@ public class OAuthAttributes {
     private final String email;
     private final String username;
     private final String nickname;
+    private final String password;
 
 
     public static OAuthAttributes of(String registrationId, String userNameAttributeName, Map<String, Object> attributes) {

@@ -27,7 +27,7 @@
                 <!-- 로그인된 사용자일 경우 닉네임 표시 -->
                 <span th:if="${nickname != null}" class="me-3">안녕하세요, <strong th:text="${nickname}"></strong>님!</span>
                 <!-- 로그인/로그아웃 버튼 및 마이페이지 버튼 -->
-                <a id="mypage-btn" class="btn btn-outline-primary me-2" sec:authorize="isAuthenticated()" th:href="@{/mypage}">마이페이지</a>
+                <a id="mypage-btn" class="btn btn-outline-primary me-2" sec:authorize="isAuthenticated()" th:href="@{/users/{username}(username=${#authentication.name})}">마이페이지</a>
                 <a id="login-btn" class="btn btn-outline-primary me-2" sec:authorize="isAnonymous()" th:href="@{/login}">로그인</a>
                 <a id="logout-btn" class="btn btn-outline-primary me-2" sec:authorize="isAuthenticated()" th:href="@{/logout}">로그아웃</a>
                 <a id="signup-btn" class="btn btn-outline-primary" sec:authorize="isAnonymous()" th:href="@{/signup}">회원가입</a>

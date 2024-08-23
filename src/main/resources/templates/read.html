@@ -15,6 +15,7 @@
     <div class="row">
         <div class="col-lg-8">
             <article>
+                <!-- Board ID를 hidden input으로 받아오기 -->
                 <input type="hidden" id="board-id" th:value="${board.id}">
 
                 <header class="mb-4">
@@ -33,15 +34,44 @@
                 <div class="mb-3">
                     <button type="button" id="list-btn" class="btn btn-primary btn-sm"
                             th:onclick="|location.href='@{/boards/list}'|">목록</button>
-                    <span th:if="${writer} == true">
+                    <span th:if="${writer}">
                         <button type="button" id="modify-btn"
                                 th:onclick="|location.href='@{/new-board?id={boardId}(boardId=${board.id})}'|"
                                 class="btn btn-primary btn-sm">수정</button>
                         <button type="button" id="delete-btn"
                                 class="btn btn-secondary btn-sm">삭제</button>
                     </span>
-
                 </div>
+
+                <!-- 댓글 목록 표시 -->
+                <section class="mb-5">
+                    <hr style="margin: 20px 0;">
+                    <h4>댓글</h4>
+                    <p th:if="${comments.isEmpty()}">댓글이 없습니다.</p>
+                    <div th:each="comment : ${comments}">
+                        <div class="d-flex justify-content-between">
+                            <div>
+                                <strong th:text="${comment.nickname}"></strong>
+                                <span th:text="|${#temporals.format(comment.createdDate, 'yyyy-MM-dd HH:mm')}|"></span>
+                                <p th:text="${comment.comment}"></p>
+                                <input type="hidden" id="comment-id" th:value="${comment.id}">
+                            </div>
+                            <div>
+                                <button type="button" id="comment-modify-btn" class="btn btn-sm btn-outline-primary">수정</button>
+                                <button type="button" id="comment-delete-btn" class="btn btn-sm btn-outline-danger">삭제</button>
+                            </div>
+                        </div>
+                        <hr style="margin: 20px 0;">
+                    </div>
+                </section>
+
+                <section class="mt-4" style="margin-bottom: 50px;">
+                    <h5>댓글 작성</h5>
+                    <div class="mb-3">
+                        <textarea id="comment-box" class="form-control" rows="3" placeholder="댓글을 입력하세요"></textarea>
+                    </div>
+                    <button id="comment-create-btn" class="btn btn-primary">댓글 작성</button>
+                </section>
             </article>
         </div>
     </div>

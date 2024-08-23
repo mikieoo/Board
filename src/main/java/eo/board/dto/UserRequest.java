@@ -10,6 +10,7 @@ import lombok.*;
 @Builder
 public class UserRequest {
 
+    private Long id;
     private String username;
     private String nickname;
     private String password;
@@ -19,6 +20,7 @@ public class UserRequest {
 
     public User toEntity() {
         return User.builder()
+                .id(id)
                 .username(username)
                 .nickname(nickname)
                 .password(password)

@@ -1,9 +1,7 @@
-
 package eo.board.service;
 
 import eo.board.dto.BoardRequest;
 import eo.board.dto.BoardResponse;
-import eo.board.dto.SessionUser;
 import eo.board.entity.Board;
 import eo.board.entity.User;
 import eo.board.repository.BoardRepository;
@@ -15,6 +13,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
@@ -33,31 +32,37 @@ public class BoardService {
         return board.getId();
     }
 
-    public List<Board> findAll() {
-        return boardRepository.findAllByOrderByIdDesc();
+    public List<BoardResponse> findAll() {
+        return boardRepository.findAllByOrderByIdDesc()
+                .stream()
+                .map(BoardResponse::new)
+                .collect(Collectors.toList());
     }
 
-    public Board findById(Long id) {
-        return boardRepository.findById(id)
+    public BoardResponse findById(Long id) {
+        Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found"));
+        return new BoardResponse(board);
     }
 
     public void delete(Long id) {
         boardRepository.deleteById(id);
     }
 
-    public Board update(Long id, BoardRequest request) {
+    public BoardResponse update(Long id, BoardRequest request) {
         Board board = boardRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("not found"));
 
         board.update(request.getTitle(), request.getContent());
 
-        return boardRepository.save(board);
+        Board updatedBoard = boardRepository.save(board);
+        return new BoardResponse(updatedBoard);
     }
 
     // 페이징 처리
-    public Page<Board> paging(Pageable pageable) {
-        return boardRepository.findAll(pageable);
+    public Page<BoardResponse> paging(Pageable pageable) {
+        return boardRepository.findAll(pageable)
+                .map(BoardResponse::new);
     }
 
     // 조회수
@@ -67,8 +72,9 @@ public class BoardService {
     }
 
     // 검색 및 페이징 처리
-    public Page<Board> search(String keyword, Pageable pageable) {
-        return boardRepository.findByTitleContaining(keyword, pageable);
+    public Page<BoardResponse> search(String keyword, Pageable pageable) {
+        return boardRepository.findByTitleContaining(keyword, pageable)
+                .map(BoardResponse::new);
     }
 
 

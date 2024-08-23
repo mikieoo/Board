@@ -22,34 +22,28 @@ public class BoardApiController {
 
     // 게시물 생성
     @PostMapping("/boards")
-    public ResponseEntity createBoard(@RequestBody BoardRequest request, @LoginUser SessionUser user) {
+    public ResponseEntity<?> createBoard(@RequestBody BoardRequest request, @LoginUser SessionUser user) {
         return ResponseEntity.ok(boardService.save(user.getNickname(), request));
     }
 
     // 게시물 전체 조회
     @GetMapping("/boards/list")
     public ResponseEntity<List<BoardResponse>> findAllBoards() {
-        List<BoardResponse> boards = boardService.findAll()
-                .stream()
-                .map(BoardResponse::new)
-                .toList();
-
+        List<BoardResponse> boards = boardService.findAll();
         return ResponseEntity.ok().body(boards);
     }
 
     // 게시물 조회
     @GetMapping("/boards/{id}")
     public ResponseEntity<BoardResponse> findBoard(@PathVariable Long id){
-        Board board = boardService.findById(id);
-
-        return ResponseEntity.ok().body(new BoardResponse(board));
+        BoardResponse response = boardService.findById(id);
+        return ResponseEntity.ok().body(response);
     }
 
     // 게시물 수정
     @PutMapping("/boards/{id}")
-    public ResponseEntity<Board> updateBoard(@PathVariable Long id, @RequestBody BoardRequest request){
-        Board updateBoard = boardService.update(id, request);
-
+    public ResponseEntity<BoardResponse> updateBoard(@PathVariable Long id, @RequestBody BoardRequest request){
+        BoardResponse updateBoard = boardService.update(id, request);
         return ResponseEntity.ok().body(updateBoard);
     }
 
@@ -57,7 +51,6 @@ public class BoardApiController {
     @DeleteMapping("/boards/{id}")
     public ResponseEntity<Board> deleteBoard(@PathVariable Long id){
         boardService.delete(id);
-
         return ResponseEntity.ok().build();
     }
 
