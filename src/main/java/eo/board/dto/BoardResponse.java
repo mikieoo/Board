@@ -1,7 +1,6 @@
 package eo.board.dto;
 
 import eo.board.entity.Board;
-import eo.board.entity.User;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -22,6 +21,8 @@ public class BoardResponse {
     private int viewCount; // 조회수
     private Long userId;
     private List<CommentResponse> comments;
+    private String profileImage;
+    private int likeCount;
 
     public BoardResponse(Board board) {
         this.id = board.getId();
@@ -33,6 +34,8 @@ public class BoardResponse {
         this.viewCount = board.getViewCount();
         this.userId = board.getUser().getId();
         this.comments = board.getComments().stream().map(CommentResponse::new).collect(Collectors.toList());
+        this.profileImage = board.getUser().getPicture();
+        this.likeCount = board.getLikeCount();
     }
 
 }

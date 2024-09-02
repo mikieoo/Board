@@ -36,6 +36,7 @@ public class BoardViewController {
         SessionUser user = (SessionUser) session.getAttribute("user");
         if (user != null) {
             model.addAttribute("nickname", user.getNickname());
+            model.addAttribute("id", user.getId());
         }
 
         // 검색 및 페이징 처리
@@ -83,6 +84,7 @@ public class BoardViewController {
         SessionUser user = (SessionUser) session.getAttribute("user");
         if (user != null) {
             model.addAttribute("nickname", user.getNickname());
+            model.addAttribute("userId", user.getId());
             if(response.getUserId().equals(user.getId())){
                 model.addAttribute("writer", true);
             }

@@ -25,14 +25,17 @@ public class WebSecurityConfig {
     @Bean
     public WebSecurityCustomizer configure() {
         return (web) -> web.ignoring()
-                .requestMatchers(new AntPathRequestMatcher("/static/**"));
+                .requestMatchers(
+                        new AntPathRequestMatcher("/static/**"),
+                        new AntPathRequestMatcher("/images/**")
+                );
     }
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/", "/home", "/login", "/signup", "/boards/list", "/boards/{id}", "/mypage", "/api/**", "/user").permitAll()
+                        .requestMatchers("/", "/home", "/login", "/signup", "/images/**", "/boards/list", "/boards/{id}", "/myInfo", "/api/**", "/user/**", "/user").permitAll()
                         .anyRequest().authenticated()
                 )
                 .formLogin(formLogin -> formLogin

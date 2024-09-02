@@ -11,6 +11,10 @@ spring:
     converters:
       preferred-json-mapper: gson
 
+  web:
+    resources:
+      static-locations: classpath:/static/
+      
   servlet:
     multipart:
       enabled: true
@@ -69,3 +73,6 @@ spring:
     properties:
       hibernate:
         format_sql: true
+
+file:
+  path: C:/upload

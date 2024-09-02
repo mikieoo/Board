@@ -2,19 +2,23 @@ package eo.board.dto;
 
 import eo.board.entity.Comment;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @Getter
+@NoArgsConstructor
 public class CommentResponse {
-    private final Long id;
-    private final String comment;
-    private final LocalDateTime createdDate;
-    private final LocalDateTime modifiedDate;
-    private final String nickname;
-    private final Long userId;
-    private final Long boardId;
+    private Long id;
+    private String comment;
+    private LocalDateTime createdDate;
+    private LocalDateTime modifiedDate;
+    private String nickname;
+    private Long userId;
+    private Long boardId;
+    private String profileImage;
+    private int likeCount;
 
     public CommentResponse(Comment comment) {
         this.id = comment.getId();
@@ -24,6 +28,8 @@ public class CommentResponse {
         this.userId = comment.getUser().getId();
         this.nickname = comment.getUser().getNickname();
         this.boardId = comment.getBoard().getId();
+        this.profileImage = comment.getUser().getPicture();
+        this.likeCount = comment.getLikeCount();
     }
 
 }

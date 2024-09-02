@@ -41,6 +41,9 @@ public class Board {
     @Column(columnDefinition = "integer default 0", nullable = false)
     private int viewCount;
 
+    @Column(columnDefinition = "integer default 0", nullable = false)
+    private int likeCount;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id")
     private User user;
@@ -48,6 +51,9 @@ public class Board {
     @OneToMany(mappedBy = "board", fetch = FetchType.EAGER, cascade = CascadeType.REMOVE)
     @OrderBy("id asc")
     private List<Comment> comments;
+
+    @OneToMany(mappedBy = "board")
+    private List<Likes> likesList;
 
     // 수정
     public void update(String title, String content){

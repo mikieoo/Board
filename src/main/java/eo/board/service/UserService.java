@@ -9,12 +9,16 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
+import java.util.Optional;
 
 @Service
 @RequiredArgsConstructor
 public class UserService {
 
     private final UserRepository userRepository;
+    private final FileService fileService;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
 
     @Transactional
@@ -24,9 +28,15 @@ public class UserService {
     }
 
     @Transactional
-    public User update(Long id, UserRequest request) {
+    public User update(Long id, UserRequest request, MultipartFile profilePicture) {
         User user = userRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("User not found"));
+
+        if (profilePicture != null && !profilePicture.isEmpty()) {
+            String storedFilename = fileService.storeFile(profilePicture);
+            String profilePictureUrl = "/images/" + storedFilename;
+            request.setPicture(profilePictureUrl);
+        }
 
         if (request.getPassword() != null && !request.getPassword().isEmpty()) {
             user.update(request.getNickname(), request.getPicture(), bCryptPasswordEncoder.encode(request.getPassword()));
@@ -51,5 +61,12 @@ public class UserService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
     }
 
+    public boolean existsByUsername(String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    public boolean existsByEmail(String email){
+        return userRepository.existsByEmail(email);
+    }
 
 }
